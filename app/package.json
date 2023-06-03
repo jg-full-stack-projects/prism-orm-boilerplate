@@ -16,7 +16,7 @@
     "sails-hook-sockets": "^2.0.0",
     "sails-hook-swagger-generator": "^3.3.0",
     "sails-mysql": "^1.0.1",
-    "swagger-ui": "^3.35.2"
+    "swagger-ui": "^4.19.0"
   },
   "devDependencies": {
     "eslint": "5.16.0"
