@@ -1,11 +1,13 @@
 {
-  "name": "express-sequelize-boilerplate",
+  "name": "express-orm-api",
   "version": "1.0.0",
+  "type": "module",
   "main": "index.js",
-  "repository": "https://github.com/gadfaria/express-sequelize-boilerplate.git",
-  "author": "gadfaria <gadfaria@gmail.com>",
+  "repository": "https://github.com/jg-full-stack-projects/sequelize-orm",
+  "author": "John Ghatas",
   "license": "MIT",
   "scripts": {
+    "start": "node src/index.js",
     "dev": "nodemon src/index.js"
   },
   "dependencies": {

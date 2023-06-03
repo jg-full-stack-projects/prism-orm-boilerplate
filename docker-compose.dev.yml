@@ -17,15 +17,10 @@ services:
       - NODE_ENV=development
     build:
       target: api-dev
-    healthcheck:
-        test: ["CMD", "curl", "-f", "http://localhost:15672"]
-        interval: 30s
-        timeout: 10s
-        retries: 5
     volumes:
       - type: bind
         read_only: false
         source: ./app/
         target: /usr/bot/app/
     ports:
-      - '${PORT:-8080}:${PORT:-1337}'
+      - '${PORT:-8080}:${PORT:-8080}'
