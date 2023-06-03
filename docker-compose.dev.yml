@@ -1,0 +1,31 @@
+version: '3.7'
+services:
+  client:
+    build:
+      target: python-development
+    restart: 'always'
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - type: bind
+        read_only: false
+        source: ./lib
+        target: /usr/bot/lib
+  api:
+    restart: always
+    environment:
+      - NODE_ENV=development
+    build:
+      target: api-dev
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:15672"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
+    volumes:
+      - type: bind
+        read_only: false
+        source: ./app/
+        target: /usr/bot/app/
+    ports:
+      - '${PORT:-8080}:${PORT:-1337}'

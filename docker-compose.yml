@@ -1,0 +1,65 @@
+version: '3.7'
+services:
+  client:
+    privileged: true
+    environment:
+      - PORT=${PORT:-1337}
+    container_name: client
+    restart: unless-stopped
+    build:
+      context: .
+      target: python-production
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:1337"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
+  api:
+    privileged: true
+    container_name: app
+    restart: unless-stopped
+    ports:
+      - '${PORT:-8080}:${PORT:-1337}'
+    build:
+      context: .
+      target: api-prod
+    environment:
+      - ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-root}
+      - DATABASE=${MYSQL_DATABASE:-adventure}
+      - MYSQL_USER=${MYSQL_USER:-root}
+      - SESSION_SECRET=${SESSION_SECRET:-secret_password}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - NODE_ENV=production
+      - URL=${URL}
+      - PORT=${PORT:-1337} 
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:3306"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
+  database:
+    privileged: true
+    container_name: database
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped
+    ports:
+      - '3306:3306'
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-root}
+      - MYSQL_DATABASE=${MYSQL_DATABASE:-adventure}
+      - MYSQL_ROOT_HOST=%
+    volumes:
+      - type: volume
+        source: db_data
+        target: /var/lib/mysql
+      - type: bind
+        read_only: true
+        source: ./database/config
+        target: /etc/mysql/conf.d
+      - type: bind
+        read_only: true
+        source: ./database/entrypoint
+        target: /docker-entrypoint-initdb.d
+volumes:
+  db_data:
