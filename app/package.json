@@ -15,7 +15,7 @@
     "sails-hook-orm": "^2.1.1",
     "sails-hook-sockets": "^2.0.0",
     "sails-hook-swagger-generator": "^3.3.0",
-    "sails-mysql": "^1.0.1",
+    "sails-mysql": "^3.0.1",
     "swagger-ui": "^3.35.2"
   },
   "devDependencies": {
