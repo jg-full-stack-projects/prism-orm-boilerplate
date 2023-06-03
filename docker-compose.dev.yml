@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  api:
+    restart: always
+    environment:
+      - NODE_ENV=development
+    build:
+      target: api-dev
+    volumes:
+      - type: bind
+        read_only: true
+        source: ./app/
+        target: /usr/prism/app/
+    ports:
+      - '${PORT:-8080}:${PORT:-8080}'

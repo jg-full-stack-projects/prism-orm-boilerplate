@@ -1,0 +1,49 @@
+version: '3.7'
+services:
+  api:
+    privileged: true
+    container_name: api
+    restart: unless-stopped
+    build:
+      context: .
+      target: api-prod
+    network_mode: host
+    environment:
+      - NODE_ENV=production
+      - PORT=${PORT:-8080}
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ACCESS_EXPIRATION_MINUTES=${JWT_ACCESS_EXPIRATION_MINUTES:-30}
+      - JWT_REFRESH_EXPIRATION_DAYS=${JWT_REFRESH_EXPIRATION_DAYS:-30}
+      - JWT_RESET_PASSWORD_EXPIRATION_MINUTES=${JWT_RESET_PASSWORD_EXPIRATION_MINUTES:-10}
+      - JWT_VERIFY_EMAIL_EXPIRATION_MINUTES=${JWT_VERIFY_EMAIL_EXPIRATION_MINUTES:-10}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USERNAME=${SMTP_USERNAME}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - EMAIL_FROM=${EMAIL_FROM}
+    volumes:
+      - api_modules:/usr/prism/app/node_modules
+    depends_on:
+      database:
+        condition: service_healthy
+  database:
+    container_name: database
+    restart: unless-stopped
+    image: postgres:15
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-phyllis}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-root}
+      - POSTGRES_DB=${POSTGRES_DB:-zephyr}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+volumes:
+  db_data:
+  api_modules:

@@ -1,0 +1,16 @@
+version: '3.7'
+services:
+  database:
+    container_name: database
+    restart: unless-stopped
+    image: postgres:15
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-phyllis}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-root}
+      - POSTGRES_DB=${POSTGRES_DB:-zephyr}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+volumes:
+  db_data:
