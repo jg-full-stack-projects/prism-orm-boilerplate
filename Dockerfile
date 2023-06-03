@@ -1,6 +1,5 @@
-FROM ubuntu:20.04 as base
-SHELL [ "/bin/bash", "-l", "-c" ]
-WORKDIR /usr/bot
+FROM ubuntu:22.04 as base
+WORKDIR /usr/sequelize
 
 # Install dependencies
 RUN apt update
