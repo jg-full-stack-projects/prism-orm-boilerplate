@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  database:
+    privileged: true
+    container_name: database
+    image: mysql:8
+    restart: unless-stopped
+    ports:
+      - '3306:3306'
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-root}
+      - MYSQL_DATABASE=${MYSQL_DATABASE:-zephyr}
+      - MYSQL_ROOT_HOST=%
+    volumes:
+      - type: volume
+        source: db_data
+        target: /var/lib/mysql
+      - type: bind
+        read_only: true
+        source: ./database/config
+        target: /etc/mysql/conf.d
+      - type: bind
+        read_only: true
+        source: ./database/entrypoint
+        target: /docker-entrypoint-initdb.d
+volumes:
+  db_data:

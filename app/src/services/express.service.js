@@ -2,6 +2,7 @@ import express from "express";
 import fs from "fs";
 import bodyParser from "body-parser";
 import globalErrorHandler from "../middlewares/errorHandler.middleware.js";
+import { dirname } from "../utils/common.js"
 
 /*
   body-parser: Parse incoming request bodies in a middleware before your handlers, 
@@ -9,7 +10,7 @@ import globalErrorHandler from "../middlewares/errorHandler.middleware.js";
 */
 
 const routeFiles = fs
-  .readdirSync(__dirname + "/../routes/")
+  .readdirSync(dirname.current() + "/../routes/")
   .filter((file) => file.endsWith(".js"));
 
 let server;

@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import express from 'express';
 import { IsApiError, ApiError } from '../utils/ApiError.js';
 const currentEnv = process.env.NODE_ENV || 'development';
 /**
@@ -8,6 +8,9 @@ const currentEnv = process.env.NODE_ENV || 'development';
  * @param {Response} res
  * @param {NextFunction} next
  */
+
+const { Request, Response, NextFunction } = express
+
 export default (err, _req, res, next) => {
   if (res.headersSent) return next(err);
   if (IsApiError(err)) return res.status(err.statusCode).send(err.message);

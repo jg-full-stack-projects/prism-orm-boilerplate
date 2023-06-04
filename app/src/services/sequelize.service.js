@@ -1,9 +1,10 @@
 import { Sequelize } from "sequelize";
 import databaseConfig from "../config/database.js";
 import fs from "fs";
+import { dirname } from "../utils/common.js"
 
 const modelFiles = fs
-  .readdirSync(__dirname + "/../models/")
+  .readdirSync(dirname.current() + "/../models/")
   .filter((file) => file.endsWith(".js"));
 
 const sequelizeService = {

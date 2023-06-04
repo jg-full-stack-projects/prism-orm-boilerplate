@@ -1,11 +1,11 @@
 import * as Yup from "yup";
-import Address from "../models/Address";
-import User from "../models/User";
+import Address from "../models/Address.js";
+import User from "../models/User.js";
 import {
   BadRequestError,
   UnauthorizedError,
   ValidationError,
-} from "../utils/ApiError";
+} from "../utils/ApiError.js";
 
 //Yup is a JavaScript schema builder for value parsing and validation.
 
