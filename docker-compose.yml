@@ -1,21 +1,13 @@
 version: '3.7'
 services:
-  client:
-    privileged: true
-    environment:
-      - PORT=${PORT:-8080}
-    container_name: client
-    restart: unless-stopped
-    build:
-      context: .
-      target: python-production
   api:
     privileged: true
-    container_name: app
+    container_name: api
     restart: unless-stopped
     build:
       context: .
       target: api-prod
+    network_mode: host
     environment:
       - NODE_ENV=production
       - PORT=${PORT:-8080}
@@ -30,11 +22,8 @@ services:
       - SMTP_USERNAME=${SMTP_USERNAME}
       - SMTP_PASSWORD=${SMTP_PASSWORD}
       - EMAIL_FROM=${EMAIL_FROM}
-    healthcheck:
-        test: ["CMD", "curl", "-f", "http://localhost:5432"]
-        interval: 30s
-        timeout: 10s
-        retries: 5
+    depends_on:
+      - database
   database:
     container_name: database
     restart: unless-stopped

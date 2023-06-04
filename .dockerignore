@@ -1,1 +1,5 @@
 node_modules/
+Dockerfile
+docker-compose*
+database-standalone.yml
+.env*

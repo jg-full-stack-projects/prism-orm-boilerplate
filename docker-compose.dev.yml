@@ -1,16 +1,5 @@
 version: '3.7'
 services:
-  client:
-    build:
-      target: python-development
-    restart: 'always'
-    environment:
-      - PYTHONUNBUFFERED=1
-    volumes:
-      - type: bind
-        read_only: false
-        source: ./lib
-        target: /usr/sequelize/lib
   api:
     restart: always
     environment:
@@ -21,6 +10,6 @@ services:
       - type: bind
         read_only: false
         source: ./app/
-        target: /usr/sequelize/app/
+        target: /usr/prism/app/
     ports:
       - '${PORT:-8080}:${PORT:-8080}'
