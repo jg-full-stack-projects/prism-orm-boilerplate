@@ -17,42 +17,35 @@ services:
       context: .
       target: api-prod
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-root}
-      - MYSQL_DATABASE=${MYSQL_DATABASE:-adventure}
-      - MYSQL_USER=${MYSQL_USER:-root}
-      - SESSION_SECRET=${SESSION_SECRET:-secret_password}
       - NODE_ENV=production
       - PORT=${PORT:-8080}
-      - SERVER_JWT_TIMEOUT=${SERVER_JWT_TIMEOUT}
-      - SERVER_JWT_SECRET=${SERVER_JWT_SECRET}
-      - SERVER_JWT=true
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ACCESS_EXPIRATION_MINUTES=${JWT_ACCESS_EXPIRATION_MINUTES:-30}
+      - JWT_REFRESH_EXPIRATION_DAYS=${JWT_REFRESH_EXPIRATION_DAYS:-30}
+      - JWT_RESET_PASSWORD_EXPIRATION_MINUTES=${JWT_RESET_PASSWORD_EXPIRATION_MINUTES:-10}
+      - JWT_VERIFY_EMAIL_EXPIRATION_MINUTES=${JWT_VERIFY_EMAIL_EXPIRATION_MINUTES:-10}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USERNAME=${SMTP_USERNAME}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - EMAIL_FROM=${EMAIL_FROM}
     healthcheck:
-        test: ["CMD", "curl", "-f", "http://localhost:3306"]
+        test: ["CMD", "curl", "-f", "http://localhost:5432"]
         interval: 30s
         timeout: 10s
         retries: 5
   database:
-    privileged: true
     container_name: database
-    image: mysql:8
     restart: unless-stopped
+    image: postgres:15
     ports:
-      - '3306:3306'
+      - '5432:5432'
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-root}
-      - MYSQL_DATABASE=${MYSQL_DATABASE:-zephyr}
-      - MYSQL_ROOT_HOST=%
+      - POSTGRES_USER=${POSTGRES_USER:-phyllis}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-root}
+      - POSTGRES_DB=${POSTGRES_DB:-zephyr}
     volumes:
-      - type: volume
-        source: db_data
-        target: /var/lib/mysql
-      - type: bind
-        read_only: true
-        source: ./database/config
-        target: /etc/mysql/conf.d
-      - type: bind
-        read_only: true
-        source: ./database/entrypoint
-        target: /docker-entrypoint-initdb.d
+      - db_data:/var/lib/postgresql/data
 volumes:
   db_data:

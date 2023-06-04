@@ -10,7 +10,7 @@ services:
       - type: bind
         read_only: false
         source: ./lib
-        target: /usr/bot/lib
+        target: /usr/sequelize/lib
   api:
     restart: always
     environment:
@@ -21,6 +21,6 @@ services:
       - type: bind
         read_only: false
         source: ./app/
-        target: /usr/bot/app/
+        target: /usr/sequelize/app/
     ports:
       - '${PORT:-8080}:${PORT:-8080}'
