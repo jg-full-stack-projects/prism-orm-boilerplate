@@ -1,5 +1,19 @@
 version: '3.7'
 services:
+  frontend:
+    restart: always
+    environment:
+      - NODE_ENV=development
+    build:
+      target: frontend-dev
+    volumes:
+      - type: bind
+        read_only: true
+        source: ./frontend/
+        target: /usr/prism/frontend/
+    ports:
+      - '8000:8000'
+
   api:
     restart: always
     environment:

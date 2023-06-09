@@ -19,6 +19,9 @@ RUN apt install nodejs build-essential libpq-dev -y
 RUN npm i -g npm@latest
 RUN npm i -g nodemon
 
+# Install packages required for the healthcheck
+RUN apt install netcat -y
+
 # Create rootless user and give permissions on the folders required
 COPY . $ROOT_DIR
 RUN useradd -m node
@@ -29,6 +32,16 @@ FROM base as api
 WORKDIR $ROOT_DIR/app
 RUN npm ci --silent
 RUN npm run db:generate
+
+FROM base as frontend
+WORKDIR $ROOT_DIR/frontend
+RUN npm ci --silent
+
+FROM frontend as frontend-dev
+CMD ["npm", "run", "serve"]
+
+FROM frontend as frontend-prod
+CMD ["npm", "run", "serve:prod"]
 
 FROM api as api-dev
 CMD ["npm", "run", "dev"]

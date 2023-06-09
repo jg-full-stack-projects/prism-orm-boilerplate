@@ -1,5 +1,20 @@
 version: '3.7'
 services:
+  frontend:
+    privileged: true
+    container_name: frontend
+    restart: unless-stopped
+    build:
+      context: .
+      target: frontend-prod
+    environment:
+      - NODE_ENV=production
+      - API_PORT=${PORT:-8080}
+    depends_on:
+      api:
+        condition: service_healthy
+    volumes:
+      - frontend_modules:/usr/prism/frontend/node_modules
   api:
     privileged: true
     container_name: api
@@ -23,6 +38,11 @@ services:
       - EMAIL_FROM=${EMAIL_FROM}
     volumes:
       - api_modules:/usr/prism/app/node_modules
+    healthcheck:
+      test: "nc -zv localhost ${PORT:-8080}"
+      interval: 5s
+      timeout: 5s
+      retries: 20
     depends_on:
       database:
         condition: service_healthy
@@ -44,5 +64,6 @@ services:
       timeout: 5s
       retries: 5
 volumes:
+  frontend_modules:
   db_data:
   api_modules:
