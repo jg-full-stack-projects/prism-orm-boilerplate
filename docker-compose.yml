@@ -7,7 +7,6 @@ services:
     build:
       context: .
       target: api-prod
-    network_mode: host
     environment:
       - NODE_ENV=production
       - PORT=${PORT:-8080}
