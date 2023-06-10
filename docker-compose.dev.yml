@@ -13,8 +13,8 @@ services:
         target: /usr/prism/frontend/src
       - type: bind
         read_only: true
-        source: ./frontend/dev
-        target: /usr/prism/frontend/dev
+        source: ./frontend/pages
+        target: /usr/prism/frontend/pages
       - type: bind
         read_only: true
         source: ./frontend/docs
