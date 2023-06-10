@@ -38,9 +38,10 @@ WORKDIR $ROOT_DIR/frontend
 RUN npm ci --silent
 
 FROM frontend as frontend-dev
-CMD ["npm", "run", "serve"]
+CMD ["npm", "run", "serve:dev"]
 
 FROM frontend as frontend-prod
+RUN npm run build
 CMD ["npm", "run", "serve:prod"]
 
 FROM api as api-dev

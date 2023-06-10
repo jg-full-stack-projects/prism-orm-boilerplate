@@ -9,8 +9,24 @@ services:
     volumes:
       - type: bind
         read_only: true
-        source: ./frontend/
-        target: /usr/prism/frontend/
+        source: ./frontend/src
+        target: /usr/prism/frontend/src
+      - type: bind
+        read_only: true
+        source: ./frontend/dev
+        target: /usr/prism/frontend/dev
+      - type: bind
+        read_only: true
+        source: ./frontend/docs
+        target: /usr/prism/frontend/docs
+      - type: bind
+        read_only: true
+        source: ./frontend/docs-src
+        target: /usr/prism/frontend/docs-src
+      - type: bind
+        read_only: true
+        source: ./frontend/index.html
+        target: /usr/prism/frontend/index.html
     ports:
       - '8000:8000'
 

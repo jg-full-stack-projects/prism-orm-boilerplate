@@ -3,10 +3,11 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>&lt;my-element> Demo</title>
+    <title>My Lit Element Demo</title>
     <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
     <script src="../node_modules/lit/polyfill-support.js"></script>
-    <script type="module" src="../my-element.js"></script>
+    <script type="module" src="../elements/my-element.js"></script>
+    <script type="module" src="../elements/first-element.js"></script>
     <style>
       p {
         border: solid 1px blue;
@@ -18,5 +19,9 @@
     <my-element>
       <p>This is child content</p>
     </my-element>
+    
+    <first-element name="John Doe" count="1">
+      <p>This is child content</p>
+    </first-element>
   </body>
 </html>
